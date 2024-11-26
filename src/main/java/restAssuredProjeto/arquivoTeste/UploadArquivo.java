@@ -13,7 +13,7 @@ public class UploadArquivo{
 	public void EnviarArquivo() { // Teste para enviar um arquivo
 		given()  																											 //Primeira parte é o nome do campo que está adicionando o arquivo
 			.log().all() // Log de todas as requisições                                                                      // Segunda parte é o caminho do arquivo 
-			.multiPart("arquivo", new File("C:\\Ives Yuh\\RestAssuredProjeto\\src\\main\\resources\\txt\\arquivoTeste.txt")) // Adiciona um arquivo multipart -
+			.multiPart("arquivo", new File("src\\main\\resources\\txt\\arquivoTeste.txt")) // Adiciona um arquivo multipart -
 		.when()
 			.post("http://restapi.wcaquino.me/upload") // Envia uma requisição POST para o endpoint de upload
 		.then()	

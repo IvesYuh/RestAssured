@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 public class SchemaXml {
 	@Test
 	public void devoFazerPesquisasAvancadasComXMLEJava() throws SAXException, IOException {
-		String schemaPath = "C:\\Ives Yuh\\RestAssuredProjeto\\src\\main\\resources\\schema\\schema.xsd";
+		String schemaPath = "src\\main\\resources\\schema\\schema.xsd";
 
 		String xml = given()
 				.when()

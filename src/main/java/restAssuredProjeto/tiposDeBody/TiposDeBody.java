@@ -1,8 +1,10 @@
-package restAssuredProjeto.verbosRest;
+package restAssuredProjeto.tiposDeBody;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -13,10 +15,15 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import br.yuh.entidades.DadosVerbosRest;
+import br.yuh.core.Arquivos;
+import br.yuh.core.Banco;
+import br.yuh.entidades.DadosTiposDeBody;
+import br.yuh.restauraTeste.RestaurarTeste;
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 
-public class VerbosRest {
+public class TiposDeBody {
     @Test
     public void validaBodyPadrao() {
         given()
@@ -53,7 +60,7 @@ public class VerbosRest {
     }
     
 	@Test
-	public void validaProtocoloReembolso() {
+	public void validaBodyComVariasListas() {
 		// Adiciona dados ao mapa, representando informações de um reembolso.
 		Map<String, Object> body = new HashMap<>();
 		body.put("idOperador", 572014);
@@ -147,7 +154,6 @@ public class VerbosRest {
 		reembolsoOpme.add(reembolsoOpmeItem);
 		body.put("reembolsoOpme", reembolsoOpme);
 
-		
 		given()
 			.pathParam("idBeneficiario", 3641)
 			.body(body)
@@ -164,7 +170,7 @@ public class VerbosRest {
     @Test
     public void validaBodyUtilizandoObjeto() {
         // Cria um objeto do tipo User com os dados do usuário
-    	DadosVerbosRest dados = new DadosVerbosRest("Usuario via objeto", 35);
+    	DadosTiposDeBody dados = new DadosTiposDeBody("Usuario via objeto", 35);
          
         given()
             .contentType(ContentType.JSON) // Tipo de conteúdo da requisição
@@ -207,5 +213,37 @@ public class VerbosRest {
             .log().all() // Log de todas as informações da resposta
             .statusCode(200)
             ; // Verifica se o código de status da resposta é 200
+    }
+    
+    @Test
+    public void validaTextoComPadraoRegex() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        RequestSpecBuilder requestSpecBuilder = new RequestSpecBuilder();
+		requestSpecBuilder.setContentType(ContentType.JSON);
+		RestAssured.requestSpecification = requestSpecBuilder.build();
+		
+    	RestaurarTeste.excluiEncaminhamentoDeGuia(Banco.obterConexao(), 28080L);
+
+    	Arquivos.retornaToken();
+    	
+    	Map<String, Object> body = new HashMap<>();
+    	body.put("guiaId", 28080);
+    	body.put("especialidadeId", 71);
+    	
+        given()
+            .body(body)
+        .when()
+            .post("http://172.16.80.21:15180/v1/guia/28080/encaminhamento") 
+        .then()
+            .statusCode(201)
+            .body("id", not("0"))
+            .body("id", greaterThan("0"))
+            .body("codigo", is(""))
+            .body("mensagem", matchesPattern("Encaminhamento gerado com sucesso! Número \\d+")); 
+        
+       // matchesPattern: Verifica se a string corresponde a um padrão regex.
+       // Regex Encaminhamento gerado com sucesso! Número \\d+:
+       // Encaminhamento gerado com sucesso!: Parte fixa da mensagem.
+       // Número \\d+: Verifica que há a palavra "Número" seguida de um ou mais dígitos (\\d+).
     }
 }

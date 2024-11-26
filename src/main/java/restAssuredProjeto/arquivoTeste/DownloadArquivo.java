@@ -20,7 +20,7 @@ public class DownloadArquivo {
 			.statusCode(200) // Verifica se o código de status é 200 (OK)
 			.extract().asByteArray() // Extrai a resposta como um array de bytes
 			; 
-		File imagem = new File("C:\\Ives Yuh\\RestAssuredProjeto\\src\\main\\resources\\png\\imagemTeste.jpeg"); // Cria um novo arquivo para armazenar a imagem
+		File imagem = new File("src\\main\\resources\\png\\imagemTeste.jpeg"); // Cria um novo arquivo para armazenar a imagem
 		OutputStream out = new FileOutputStream(imagem); // Cria um fluxo de saída para o arquivo
 		out.write(image); // Escreve os bytes da imagem no arquivo
 		out.close(); // Fecha o fluxo de saída

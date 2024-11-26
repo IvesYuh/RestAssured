@@ -1,10 +1,10 @@
 package br.yuh.entidades;
 
-public class DadosVerbosRest {
+public class DadosTiposDeBody {
 	private String name;
 	private Integer age;
 
-	public DadosVerbosRest(String name, Integer age) {
+	public DadosTiposDeBody(String name, Integer age) {
 		this.name = name;
 		this.age = age;
 	}

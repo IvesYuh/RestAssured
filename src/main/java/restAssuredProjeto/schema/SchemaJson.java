@@ -34,7 +34,7 @@ public class SchemaJson {
 	            	;
 
 	        ObjectMapper objectMapper = new ObjectMapper(); // Carregando o schema JSON
-	        JsonNode schemaNode = objectMapper.readTree(new File("C:\\Ives Yuh\\RestAssuredProjeto\\src\\main\\resources\\schema\\schema.json"));
+	        JsonNode schemaNode = objectMapper.readTree(new File("src\\main\\resources\\schema\\schema.json"));
 	        
 	        JsonNode responseNode = objectMapper.readTree(response.asString()); // Converte o conteúdo da resposta da API para o formato JsonNode
 
